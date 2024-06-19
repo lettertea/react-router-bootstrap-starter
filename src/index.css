@@ -7,3 +7,9 @@ body {
 main {
   min-height: 80vh;
 }
+
+
+.hoverable:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
