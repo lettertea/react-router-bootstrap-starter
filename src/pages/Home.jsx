@@ -15,44 +15,78 @@ const Home = () => {
 
   const [modalText, setModalText] = useState("Welcome to the site. Please Choose your native language.ようこそ 母国語を選択してください。");
 
+  const [hasClosedModal, setHasClosedModal] = useState(false);
+  const [firstClickSuccess, setFirstClickSuccess] = useState(false)
+  const [secondClickSuccess, setSecondClickSuccess] = useState(false)
 
-  const handleClose = () => { setShow(false) };
-  const handleFirstClick = () => {
+
+  const handleClose = () => { setShow(false); setHasClosedModal(true) };
+  const handleFirstSuccess = () => {
 
 
     setModalText("You found the button. ボタンを発見した！")
     setShow(true)
+    setFirstClickSuccess(true)
   };
   const handleWrongClick = () => {
+    if (!secondClickSuccess){
     setModalText("Wrong Link! Try again")
+    } else {
+      setModalText("You've already finished the task! Please proceed to the survey")
+    }
+    
+    setShow(true)
+  }
+
+  const handleSecondSuccess = () => {
+    setModalText("Congratulations, you finished the task! Please go to our survey here.")
+    setSecondClickSuccess(true)
     setShow(true)
   }
 
 
+
+  let modalFooter = <Modal.Footer>
+  <Button variant="secondary" onClick={handleClose}>
+    English
+  </Button>
+  <Button variant="secondary">日本語</Button>
+</Modal.Footer>
+
+  if ((!firstClickSuccess && hasClosedModal) || firstClickSuccess && !secondClickSuccess) {
+    modalFooter =         <></>
+  } else if (secondClickSuccess){
+    modalFooter =         <Modal.Footer>
+    <Button variant="primary">Survey</Button>
+  </Modal.Footer>
+  }
+
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Modal title</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{modalText}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        <Modal.Body>
+          {modalText}
+        </Modal.Body>
+        {modalFooter}
       </Modal>
-      <Meta title={pageTitle} />
-      <Header head={pageTitle} description={pageDescription} />
 
       <div class="container">
         <div class="row">
           <div class="col-2">
+
+            
             <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
               <Card.Body>
+                
                 <Card.Text style={{fontSize:12}}>
                   <div>
                   <strong>
@@ -73,11 +107,18 @@ const Home = () => {
             </Card>
             <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
               <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+              <Card.Title>Popular Tags</Card.Title>
                 <Card.Text style={{fontSize:12}}>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
+                  {[["#computerscience", "82,645 Posts"], ["#アルバイト", "65,523 Posted by this tag"], ["#research", "#survey"], 
+                  ["#projects", "48,029 Posts"], ["#startups", "1,300 Posts"], 
+                  ].map(category => {
+                    return <div onClick={handleWrongClick}  className='hoverable' >
+                      <strong>{category[0]}</strong>
+                      <div style={{color:"gray"}}>{category[1]}</div>
+                    </div>
+                  }
+
+                  )}
                 </Card.Text>
 
               </Card.Body>
@@ -86,7 +127,7 @@ const Home = () => {
               <Card.Body>
                 <Card.Title>Categories</Card.Title>
                 <Card.Text style={{fontSize:12}}>
-                  {[["Class Recommendations", "82,645 Posts", handleWrongClick], ["Homework Help", "65,523 Posted by this tag", handleWrongClick], ["Student Surveys", "Posts", handleFirstClick], 
+                  {[["Class Recommendations", "82,645 Posts", handleWrongClick], ["Homework Help", "65,523 Posted by this tag", handleWrongClick], firstClickSuccess ? ["Already Found!", "0",  handleWrongClick] : ["Student Surveys", "Posts",  handleFirstSuccess], 
                   ["Tutor Help", "48,029 Posts", handleWrongClick], ["Books Donate", "100 Posts", handleWrongClick], 
                   ["Dorm", "11,000 Posts", handleWrongClick],["Part-Time", "8,645 Posts", handleWrongClick],["Rants", "3,622 Posts", handleWrongClick]].map(category => {
                     return <div onClick={category[2]}  className='hoverable' >
@@ -118,66 +159,59 @@ const Home = () => {
       </InputGroup>
             </Card>
 
-            <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
-              <Card.Body>
-                <Card.Title>Survey site</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+            {[firstClickSuccess ? ["Which donut barnds do you prefer?", "Lifestyle|Sweets|Reccs",  handleWrongClick] : ["Help!! Pls pls pls answer this survey for me", "UI|UX|Survey",  handleWrongClick], ["How was the Welcome Party?", "Freshmen|Sempro|SILS", handleWrongClick], !firstClickSuccess ? ["Into KPOP?! Join our KPOP Dance Circle", "KPOP|Dance|Circle",  handleSecondSuccess] : ["HTI Survey", "UI|UX|Survey",  handleSecondSuccess], 
+                  ["Tutor Help", "48,029 Posts", handleWrongClick], ["Books Donate", "100 Posts", handleWrongClick], 
+                  ["Dorm", "11,000 Posts", handleWrongClick],["Part-Time", "8,645 Posts", handleWrongClick],["Rants", "3,622 Posts", handleWrongClick]].map((category,i) => {
+                    return <Card bg={i ===0 && !firstClickSuccess ? "warning":""} onClick={category[2]} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+            <Card.Body>
+                <Card.Title>{category[0]}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{category[1]}</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
+                  Blank text
                 </Card.Text>
                 <Button >Wrong Button</Button>
                 <Card.Link href="#">Another Link</Card.Link>
               </Card.Body>
-            </Card>          <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+            </Card>
+                  }
+
+                  )}
+          </div>
+
+          <div class="col-3">
+
+            <Card style={{ "padding":20, marginBottom:20, "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
+            <InputGroup>
+        <Form.Control
+        disabled={true}
+          placeholder="Your first task is: find the “Student Surveys” Section"
+          aria-label="Your first task is: find the “Student Surveys” Section"
+          aria-describedby="basic-addon2"
+        />
+        <Button variant="success" id="button-addon2">
+          Button
+        </Button>
+      </InputGroup>
+            </Card>
+
+            {[firstClickSuccess ? ["Which donut barnds do you prefer?", "Lifestyle|Sweets|Reccs",  handleWrongClick] : ["Help!! Pls pls pls answer this survey for me", "UI|UX|Survey",  handleWrongClick], ["How was the Welcome Party?", "Freshmen|Sempro|SILS", handleWrongClick], firstClickSuccess ? ["Into KPOP?! Join our KPOP Dance Circle", "KPOP|Dance|Circle",  handleSecondSuccess] : ["HTI Survey", "UI|UX|Survey",  handleWrongClick], 
+                  ["Tutor Help", "48,029 Posts", handleWrongClick], ["Books Donate", "100 Posts", handleWrongClick], 
+                  ["Dorm", "11,000 Posts", handleWrongClick],["Part-Time", "8,645 Posts", handleWrongClick],["Rants", "3,622 Posts", handleWrongClick]].map(category => {
+                    return <Card onClick={category[2]} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+            <Card.Body>
+                <Card.Title>{category[0]}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{category[1]}</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
+                  Blank text
                 </Card.Text>
-                <Card.Link href="#">Card Link</Card.Link>
-                <Card.Link href="#">Another Link</Card.Link>
-              </Card.Body>
-            </Card>          <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-                <Card.Link href="#">Card Link</Card.Link>
-                <Card.Link href="#">Another Link</Card.Link>
-              </Card.Body>
-            </Card>          <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-                <Card.Link href="#">Card Link</Card.Link>
+                <Button >Wrong Button</Button>
                 <Card.Link href="#">Another Link</Card.Link>
               </Card.Body>
             </Card>
-          </div>
-          <div class="col">
-            <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk of the card's content.
-                </Card.Text>
-                <Card.Link href="#">Card Link</Card.Link>
-                <Card.Link href="#">Another Link</Card.Link>
-              </Card.Body>
-            </Card>
-          </div>
+                  }
+
+                  )}
+                  </div>
         </div>
 
       </div>

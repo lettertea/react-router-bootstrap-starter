@@ -13,3 +13,11 @@ main {
   background-color: #ddd;
   cursor: pointer;
 }
+
+img {
+  max-width: inherit;
+  max-height: inherit;
+  height: 60px;
+  width: inherit;
+  object-fit: cover;
+}

@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { Nav, Container } from "react-bootstrap";
-
+import { IoNotificationsSharp } from "react-icons/io5";
+import { AiOutlineMessage } from "react-icons/ai";
+import Form from 'react-bootstrap/Form';
+import { IoIosSearch } from "react-icons/io";
+import InputGroup from 'react-bootstrap/InputGroup';
+import { FaRegCalendarDays } from "react-icons/fa6";
+import { IoIosHome } from "react-icons/io";
 const Menu = () => {
   return (
     <Container>
@@ -11,24 +17,38 @@ const Menu = () => {
           
         >
           <strong style={{fontSize:24, color:"orange"}}>
+                  <img src={require("../assets/images/hti_logo_4.png")}/> 
+
           WasedaConnect!
           </strong>
         </Link>
+
         <Nav>
-          <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li>
-              <Link to="/about" className="nav-link px-2 link-secondary">
-                About
-              </Link>
-            </li>
+        <IoIosHome size={40} style={{marginRight:30}}/>
+        <FaRegCalendarDays size={40} style={{marginRight:30}}/>
+
+          
+        <ul style={{marginRight:200, width:300}} className="nav ">
+        <InputGroup>
+        <Form.Control disabled={true}
+                                type="text"
+                                placeholder="Search here.."
+                            />
+                                <InputGroup.Text>
+                                    <IoIosSearch size={30}/>
+                                </InputGroup.Text>
+
+                        </InputGroup>
+
           </ul>
 
-          <div className="col-md-3 text-end">
-            <Link to="/">
-              <button type="button" className="btn btn-outline-primary me-2">
-                Documentation
-              </button>
-            </Link>
+          <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <AiOutlineMessage size={40} style={{marginRight:30}}/>
+          <IoNotificationsSharp size={40} style={{marginRight:30}}/>
+          </ul>
+
+          <div className="col-md-1 text-end">
+                LastName FirstName
           </div>
         </Nav>
       </header>
