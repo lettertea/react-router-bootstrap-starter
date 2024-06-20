@@ -24,7 +24,7 @@ const Home = () => {
   const handleFirstSuccess = () => {
 
 
-    setModalText("You found the button. ボタンを発見した！")
+    setModalText("You found the hidden survey link! Now for the final task, find the true survey link")
     setShow(true)
     setFirstClickSuccess(true)
   };
