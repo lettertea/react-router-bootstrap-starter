@@ -20,15 +20,17 @@ const Home = () => {
   const [secondClickSuccess, setSecondClickSuccess] = useState(false)
 
 
+  const [misclickCounter, setMisclickCounter]  = useState(0)
+
   const handleClose = () => { setShow(false); setHasClosedModal(true) };
   const handleFirstSuccess = () => {
-
-
     setModalText("You found the hidden survey link! Now for the final task, find the true survey link")
     setShow(true)
     setFirstClickSuccess(true)
   };
   const handleWrongClick = () => {
+    setMisclickCounter(currentCount=>currentCount+1)
+
     if (!secondClickSuccess){
     setModalText("Wrong Link! Try again")
     } else {
@@ -39,7 +41,7 @@ const Home = () => {
   }
 
   const handleSecondSuccess = () => {
-    setModalText("Congratulations, you finished the task! Please go to our survey here.")
+    setModalText(`Congratulations, you finished the task! Please go to our survey here.\nMisclicks:${misclickCounter}`)
     setSecondClickSuccess(true)
     setShow(true)
   }
@@ -142,6 +144,11 @@ const Home = () => {
 
               </Card.Body>
             </Card>
+            
+            <Card onClick={handleWrongClick} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+            <img style={{cursor:"pointer" ,backgroundColor:'#ADD8E6', height:400, borderRadius:4}} src={require("../assets/images/screenshot_20240614_at_1629451.png")} />
+
+            </Card>
           </div>
           <div class="col-7">
 
@@ -169,8 +176,7 @@ const Home = () => {
                 <Card.Text>
                   Blank text
                 </Card.Text>
-                <Button >Wrong Button</Button>
-                <Card.Link href="#">Another Link</Card.Link>
+                <Button >click</Button>
               </Card.Body>
             </Card>
                   }
@@ -180,37 +186,56 @@ const Home = () => {
 
           <div class="col-3">
 
-            <Card style={{ "padding":20, marginBottom:20, "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
-            <InputGroup>
-        <Form.Control
-        disabled={true}
-          placeholder="Your first task is: find the “Student Surveys” Section"
-          aria-label="Your first task is: find the “Student Surveys” Section"
-          aria-describedby="basic-addon2"
-        />
-        <Button variant="success" id="button-addon2">
-          Button
-        </Button>
-      </InputGroup>
-            </Card>
+            
 
-            {[firstClickSuccess ? ["Which donut barnds do you prefer?", "Lifestyle|Sweets|Reccs",  handleWrongClick] : ["Help!! Pls pls pls answer this survey for me", "UI|UX|Survey",  handleWrongClick], ["How was the Welcome Party?", "Freshmen|Sempro|SILS", handleWrongClick], firstClickSuccess ? ["Into KPOP?! Join our KPOP Dance Circle", "KPOP|Dance|Circle",  handleSecondSuccess] : ["HTI Survey", "UI|UX|Survey",  handleWrongClick], 
-                  ["Tutor Help", "48,029 Posts", handleWrongClick], ["Books Donate", "100 Posts", handleWrongClick], 
-                  ["Dorm", "11,000 Posts", handleWrongClick],["Part-Time", "8,645 Posts", handleWrongClick],["Rants", "3,622 Posts", handleWrongClick]].map(category => {
-                    return <Card onClick={category[2]} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+                    <Card onClick={handleWrongClick} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
             <Card.Body>
-                <Card.Title>{category[0]}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{category[1]}</Card.Subtitle>
+                <Card.Title>            
+                </Card.Title>
+                <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                 <Card.Text>
-                  Blank text
+                <strong style={{ fontSize: 20 }}>
+            <img style={{backgroundColor:'#ADD8E6', borderRadius:4, margin:5}} src={require("../assets/images/hti_logo_4.png")} />
+
+            WasedaConnect!
+          </strong>                WasedaConnect is an imaginary forum website created by Group 1 of the class Human Technology Interface, aiming to explore various aspects of user interaction. 
+Waseda Connect
+Currently, we are conducting a study on the differences between Japanese and Western UI design, and you have been randomly assigned to either one. Please follow the two tasks assigned to you and ensure you answer the survey at the end. Thank you for your cooperation and valuable insights.
                 </Card.Text>
-                <Button >Wrong Button</Button>
-                <Card.Link href="#">Another Link</Card.Link>
+                <Button >click</Button>
               </Card.Body>
             </Card>
+
+
+            <Card onClick={handleWrongClick} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+            <img style={{cursor:"pointer" ,backgroundColor:'#ADD8E6', height:400, borderRadius:4}} src={require("../assets/images/screenshot_20240614_at_1639571.png")} />
+
+            </Card>
+
+            <Card style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+              <Card.Body>
+                <Card.Title>Waseda Meetups</Card.Title>
+                <Card.Text style={{fontSize:12}}>
+                  {[["GDSC Figma Workshop", "Shinjuku, Tokyo"], ["Coffee meetup", "Shibuya, Tokyo"], ["ICC Basketball Tournament", "Waseda Campus, Tokyo"], 
+                  ["Tech meetup", "Shinjuku, Tokyo"]].map(category => {
+                    return <div onClick={handleWrongClick}  className='hoverable' >
+                      <strong>{category[0]}</strong>
+                      <div style={{color:"gray"}}>{category[1]}</div>
+                    </div>
                   }
 
                   )}
+                
+                </Card.Text>
+
+              </Card.Body>
+            </Card>
+            
+            <Card onClick={handleWrongClick} style={{ "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", marginBottom:20}}>
+            <img style={{cursor:"pointer" ,backgroundColor:'#ADD8E6', height:400, borderRadius:4}} src={require("../assets/images/image.png")} />
+
+            </Card>
+                  
                   </div>
         </div>
 
