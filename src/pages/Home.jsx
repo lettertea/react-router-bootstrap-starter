@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   // page content
@@ -18,9 +19,9 @@ const Home = () => {
   const [hasClosedModal, setHasClosedModal] = useState(false);
   const [firstClickSuccess, setFirstClickSuccess] = useState(false)
   const [secondClickSuccess, setSecondClickSuccess] = useState(false)
-
-
   const [misclickCounter, setMisclickCounter]  = useState(0)
+
+  const navigate = useNavigate();
 
   const handleClose = () => { setShow(false); setHasClosedModal(true) };
   const handleFirstSuccess = () => {
@@ -59,7 +60,7 @@ const Home = () => {
     modalFooter =         <></>
   } else if (secondClickSuccess){
     modalFooter =         <Modal.Footer>
-    <Button variant="primary">Survey</Button>
+    <Button variant="primary" onClick={()=>navigate("/survey")}>Survey</Button>
   </Modal.Footer>
   }
 

@@ -6,8 +6,8 @@ import Layout from "./layout/Layout";
 
 // pages
 import Home from "./pages/Home";
-import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Survey from "./pages/Survey";
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
       <Container>
         <Routes>
           <Route path="/" element={<Home />} exact />
-          <Route path="/about" element={<About />} />
+          <Route path="/survey" element={<Survey />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Container>
